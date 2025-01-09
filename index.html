@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Website</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        /* Menu Bar */
+        .navbar {
+  width:110%;
+  max-width: 1500px;
+  padding: 10px;
+  background-color: rgb(50, 2, 59);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(248, 246, 248);
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 10x;
+  display: flex;
+}
+
+.navbar li {
+  margin-right: 20px;
+}
+
+.navbar li:last-child {
+    margin-right: 20px;
+}
+.navbar a {
+  color: rgb(248, 246, 248);
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 5px;
+  }
+  .navbar ul {
+    flex-direction: column;
+  }
+  .navbar li {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .navbar {
+    padding: 2px;
+    font-size: 14px;
+  }
+  .navbar ul {
+    padding: 0;
+  }
+  .navbar li {
+    font-size: 14px;
+  }
+}
+
+        /* Full-width Image */
+        .header-image {
+        width: 110%;
+        max-width: 1500px;
+        height: auto;
+        margin: 0;
+        border: 1px solid #ccc;
+        border-radius: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+        /* Round Corner Boxes */
+        .content-section {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .content-box {
+            background-color: #f7d5ef;
+            border-radius: 15px;
+            padding: 20px;
+            width: 30%;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+        }
+
+            @media only screen and (max-width: 768px) {
+      .content-section {
+        flex-direction: column;
+      }
+
+      .content-box {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+
+
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .two-columns .content-box {
+            width: 45%;
+        }
+        @media only screen and (max-width: 768px) {
+      .two-columns {
+        flex-direction: column;
+      }
+
+      .two-columns .content-box {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+
+
+
+        /* test animation*/
+        .fade-in{
+        animation: fadeInOut 15s infinite;
+        }
+        @keyframes fadeInOut{
+            0%{
+                opacity: 0;
+            }
+            50%{
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        /* Testimonials Section */
+        .testimonial-section {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .testimonial-box {
+            background-color: #f7d5ef;
+            width: 45%;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            justify-content: space-between;
+            text-align: left;
+            image: url('display.jpg');
+        }
+
+        @media only screen and (max-width: 768px) {
+      .testimonial-section {
+        flex-direction: column;
+      }
+
+      .testimonial-box {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+
+
+/* responsive images*/
+.responsive-image {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+
+        /* Footer */
+        .footer {
+            background-color: rgb(50, 2, 59);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer .social-icons {
+            margin-bottom: 10px;
+        }
+        .footer .social-icons a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menu Bar -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="pvlogouss.png" width="160" height="40">
+        </div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="pvservices.html">Services</a></li>
+            <li><a href="pvaboutus.html">About Us</a></li>
+            <li><a href="pvportfolio.html">Portfolio</a></li>
+            <li><a href="pvcontactus.php">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Full-width Image -->
+    <img src="pvfront.jpg" alt="Main Image" width="110" class="header-image">
+       
+<center><P style="color:rgb(51, 3, 128);"><b>WE HAVE OUR DISTINCTIVE OUTPUTS, SRING BASICALLY OUT OF CREATIVE AND INFORMATION TECHNOLOGY</b></P></center>
+
+
+    <!-- Three Columns of Text -->
+    <div class="content-section">
+        <div class="content-box">
+            <h3>THINK CREATIVELY</h3>
+            <p>Creativity is reasonably seeing what everyone else has seen, meanwhile thinking differently beyond the similar thought of any other one!<br><b>We Think Creatively!</b></p>
+        </div>
+        <div class="content-box">
+            <h3>LEVERAGE TECHNOLOGY</h3>
+            <p>Using of technological tools, systems, and innovations to attain and improve efficiency, productivity, and effectiveness is what anyone should not do without, in various aspects of business or life!<br><b>We Leverage Technology!</b></p>
+        </div>
+        <div class="content-box">
+            <h3>DELIEVER DISTINCTIVELY</h3>
+            <p>We go positively beyond clients expectations to offer or deliever unique output, and this is one of those qualities set us apart from others. We aim at creating a memorable experience and value that resonates deeply with our clients/customers/stakeholders.<br><b>We Delievr Distinctively!</b></p>
+        </div>
+    </div>
+
+    <!-- Two Columns of Text and Image -->
+    <div class="two-columns">
+        <div class="content-box">
+            <h3>AI-driven CCTV Upgrade are coming to the 'world's most watched streets- will they make brain safer?<br></h3>
+            <h> Published: March 29, 2021 4:16pm SAST<br>   
+            <h style="color:rgb(80, 5, 201);"><b>William Webster,</b> University of Stirling</h>
+            <p>It is obvious the CCTV ecosystem is also evolving. Old cameras have been replaced by new digital ones with significantly improved surveillance capabilities. Sharper recordings now offer clearer pictures that could be used as trustworthy evidence in legal proceedings. And the growing profusion of internet-connected “smart cameras”, offer a new way to analyse footage via Artificial Intelligence (AI), both in real-time or via recordings after incidents have occurred.
+                Such AI, in use across some CCTV ecosystems, can be used to automatically analyse unfolding situations, potentially enhancing public safety. These systems are proving useful for identifying objects on train tracks, monitoring crowd size, recognising unusual behaviour, and identifying known suspects in a dragnet of recordings from a certain area.
+                But new, AI-driven surveillance technology is fiercely contested. For instance, facial recognition software, which is seen as desirable for policing, has been criticised for being unreliable and racially biased. Police access to personal surveillance footage, like that from a doorbell camera which records everyone who visits your home, could also become a contentious privacy issue in the near future.
+                </p> <br>
+                <center><p>THIS IS WHAT <b>JONNY BAUER</b> HAS TO SAY...</p></center>
+                <img src="forbes1.jpg" alt="Image" class="responsive-image">
+        </div>
+        <div class="content-box">
+            <h3 style="color:rgb(238, 106, 18);">DISTINCTIVE PRODUCTS AND SERVICES SUBSTANTIATE OUR PECULIARITY</h3>
+            <img src="pvpixuse.jpg" alt="Image" class="responsive-image" stlye="border-radius:15px;">
+            <br><br><br>
+            <p style="color:rgb(47, 6, 194);"> We warmly welcome you today, to explore our products and services, let us serve you to have the best of experience you would ever desire.</p>
+            <p style="color:rgb(47, 6, 194);"> Contact us to learn more about us!</p>
+            <p style="color:rgb(47, 6, 194);"> <b>Keep in touch with our website, to have awareness of the latest from us !</b></p><br>
+
+            <p style="color:rgb(121, 5, 82);"> <b>A TASTE OF OUR PRODUCTS AND SERVICES WILL AMAZINGLY GIVE YOU THE PECULIAR EXPERIENCE, TOWARDS THE BEST OF YOUR DESIRES.</b></p>
+        </div>
+    </div>
+    <!-- Testimonials and Text/Image Column -->
+    <div class="testimonial-section">
+        <div class="testimonial-box">
+            <h3>Testimonials</h3>
+            <p>Just Brief Of What Our Clients Has to Say About Our Products and Services....</p><br><br><br>
+            <i>"Your service at ParahVine GlobalTech serves me and our organization the best of what makes us operate among the lead in the world of our business. Kudos to you guys!"</i><br><br><b>Bilamin Abdul</b>(bilaminabdul23@gmail.com)
+        </div>
+        <div class="testimonial-box">
+            <center><h3>HAVE A TASTE, HAVE A PECULIAR EXPERIENCE !</h3></center>
+            <center><p>We Are Always Ready To Serve You The Best</p></center>
+            <img src="pvwall.jpg" alt="Image" class="responsive-image"><br>
+            <img src="artwk1.jpg" alt="Image" class="responsive-image"><br>
+            <img src="pvvibes.jpg" alt="Image" class="responsive-image"><br>
+            <img src="bilflyer.jpg" alt="Image" class="responsive-image"><br>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="social-icons">
+            <a href="your-facebook-link">Facebook</a>
+            <a href="your-twitter-link">Twitter</a>
+            <a href="your-instagram-link">Instagram</a>
+        </div>
+        <div class="address">
+            <p>422 S Main Street #1009
+                Lombard, IL, 60148<br>
+                <b>Tel:</b> 844-288-0933,  773-302-5398<br><br>
+                19, Oke Arula Area, Ofatedo (Osogbo)<br>
+                <b>Tel:</b> +2348031508969
+
+
+                <p style="color:rgb(245, 154, 248);">© 2025 Parah-Vine GlobalTech - All Rights Reserved</p>
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>

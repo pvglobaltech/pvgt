@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .portfolio-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        .portfolio-item {
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: calc(50% - 20px);
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.05);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .portfolio-item .description {
+            padding: 15px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 0 0 15px 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Portfolio</h1>
+    </header>
+
+    <div class="portfolio-container">
+        <div class="portfolio-item">
+            <img src="bilflyer.jpg" alt="Project 1">
+            <div class="description">Project made with client's satisfaction</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="letter2.jpg" alt="Project 2">
+            <div class="description">Project with excellence</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="bileflyer.jpg" alt="Project 3">
+            <div class="description">Just Remarkable</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="vickyfresh2.jpg" alt="Project 4">
+            <div class="description">Project made with great skill</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="vickyfresh1.jpg" alt="Project 5">
+            <div class="description">Sticker Print for Packaging</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="africabanner.png" alt="Project 6">
+            <div class="description">very cool</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="meterapp.png" alt="Project 7">
+            <div class="description">Awesome</div>
+        </div>
+      
+        <div class="portfolio-item">
+            <img src="meterapp1.png" alt="Project 8">
+            <div class="description">Fantastic Job</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="meterapp0.png" alt="Project 8">
+            <div class="description">Fantastic UI/UX Design</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="uiuxdesign1.jpg" alt="Project 8">
+            <div class="description">Great UI/UX Design Of A Mobile App</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="dletter.jpg" alt="Project 8">
+            <div class="description">Just a Topnotch Letterhead</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="package1.jpg" alt="Project 8">
+            <div class="description">Nice Packaging job</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="vikkyborn.jpg" alt="Project 8">
+            <div class="description">Excellent Package Design</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="geocard.jpg" alt="Project 8">
+            <div class="description">Business Card Awesomely Delievered</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="mazbry1.jpg" alt="Project 8">
+            <div class="description">Advert Banner</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="magz.jpg" alt="Project 8">
+            <div class="description">Magazine Cover</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="music.jpg" alt="Project 8">
+            <div class="description"> Poster for Music Ministry</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="nylon.jpg" alt="Project 8">
+            <div class="description">Branded Nylon</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="pvnet.jpg" alt="Project 8">
+            <div class="description">An E-Flyer</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="towel.jpg" alt="Project 8">
+            <div class="description">Customized Towel</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="cg1.jpg" alt="Project 8">
+            <div class="description">Printed Banner</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="cg2.jpg" alt="Project 8">
+            <div class="description">Printed Banner</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="babe.jpg" alt="Project 8">
+            <div class="description">Thumbnail for YouTube Channel</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="vk22.jpg" alt="Project 8">
+            <div class="description">Package Branding</div>
+        </div>
+        <div class="portfolio-item">
+            <img src="uxdesign.jpg" alt="Project 8">
+            <div class="description">Completed UI/UX Design of Mobile App</div>
+        </div>
+
+        <br><br>
+        <center><P style="color:rgb(8, 36, 2);">WE ARE DELIGHTED TO LET YOU KNOW, JUST ONLY FEW OF OUR DELIVERED WORKS ARE WHAT WE PLACE HERE.<br><br>
+        WE HAVE MORE EXCELLENTLY DELIVERED WORKS TO OUR CLIENTS ACROSS THE WORLD, FROM PARAH-VINE GLOBALTECH.<br><br>
+        WE ARE THEN LOOKING FORWARD TO HAVING YOU AS ONE OF OUR BUSINESS PARTNERS, BY ATTAINING <br><br>
+        THE BEST OF EXPERIENCE YOU WOULD DESIRE AS OUR CLIENT</P>
+        </center>
+        <br><br><br>
+        <P> Here is the link: <a href="https://uxfol.io/p/68e2e44b/02625b17"> to the <b>USER EXPERIENCE OF SOME OF OUR MOBILE APP DEVELOPMENT PROJECTS</b></P></a><br><br>
+        <P> Here is the link: <a href="https://www.bilsolutions.com"> to the <b>REAL FUNCTIONALITY OF SOME OF OUR WEB DEVELOPMENT PROJECTS FOR OUR CLIENTS</b></P></a><br><br>
+
+        
+        
+    </div>
+    
+    <center><h2 style="color:rgb(238, 106, 18);">CLICK TO RETURN TO HOME PAGE</h2></center>
+        <center><p><a href="index.html">Home</a></p></center>
+
+    <footer>
+        &copy; 2025 Parah-Vine GlobalTech. All rights reserved.
+    </footer>
+
+    <script>
+        // Add any JavaScript functionality here if needed
+    </script>
+</body>
+</html>
