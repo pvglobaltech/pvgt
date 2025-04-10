@@ -83,36 +83,9 @@
 
     <div class="container">
         <img src="pvformage.jpg" alt="Top Image">
-        <h2>Contact Us</h2>
+       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSejtWSj8b9zIPVAiET5PTdRrCMNuqrl--DNNs5CPDi-xHvy6A/viewform?embedded=true" width="640" height="1174" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
 
-        <form action="pvcontactus.php" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="service">Select Service:</label>
-            <select id="service" name="service" required>
-                <option value="consultation">Consultation</option>
-                <option value="Graphic Design">Graphic Design</option>
-                <option value="UI/UX Design">UI/UX Design</option>
-                <option value="Website Develpment">Website Development</option>
-                <option value="Mobile App Development">Mobile App Development</option>
-                <option value="Database Management">Database Management</option>
-                <option value="Digital Marketing">Digital Marketing</option>
-                <option value="Brand Management">Brand Management</option>
-                <option value="Digital and Creative Art Products">Digital and Creative Art Products</option>
-                <option value="Industrial Printing">Industrial Printing</option>
-                <option value="Feedback">Feedback</option>
-                <!-- Add more options as needed -->
-            </select>
-
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-
-            <input type="submit" name="submit" value="Submit">
-        </form>
+     
     </div>
     <div class="rounded-box">
         <h2 style="color:rgb(238, 106, 18);">CLICK TO RETURN TO HOME PAGE</h2>
