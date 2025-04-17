@@ -123,20 +123,24 @@
             display: flex;
             justify-content: space-between;
             padding: 10px;
-            align-items: center;
+            align-items: stretch;
         
         }
         .two-columns .content-box {
             width: 45%;
+            margin: 0 10px;
         }
         @media only screen and (max-width: 768px) {
       .two-columns {
         flex-direction: column;
+        align-items: center;
       }
 
       .two-columns .content-box {
         width: 100%;
         margin-bottom: 20px;
+        margin-left: 0;
+        margin-right: 0;
       }
     }
 
