@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
+    <title>Contact Us — ParahVine GlobalTech</title>
     <style>
+        * { box-sizing: border-box; }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -12,84 +14,321 @@
             background-color: #f4f4f4;
         }
 
-        .container { 
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #C7B8EA;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        /* ── Navbar ── */
+        .navbar {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: rgb(50, 2, 59);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgb(248, 246, 248);
+        }
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .navbar li { margin: 5px 12px; }
+        .navbar a { color: rgb(248, 246, 248); text-decoration: none; }
+        .navbar a:hover { color: #f0c0f0; }
+
+        /* ── Page wrapper ── */
+        .page-wrapper {
+            max-width: 680px;
+            margin: 40px auto 60px;
+            padding: 0 16px;
         }
 
-        .container img {
+        /* ── Top banner image ── */
+        .page-wrapper img.banner {
             width: 100%;
             height: auto;
-            border-radius: 8px 8px 0 0;
+            border-radius: 10px 10px 0 0;
+            display: block;
         }
 
-        h2 {
+        /* ── Form card ── */
+        .form-card {
+            background-color: #C7B8EA;
+            padding: 30px 28px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .form-card h2 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #333;
+            color: rgb(50, 2, 59);
+            margin-top: 0;
+            margin-bottom: 6px;
+            font-size: 1.5rem;
+        }
+
+        .form-card .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 24px;
+            font-size: 14px;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
-            color: #333;
+            margin-bottom: 6px;
+            color: rgb(50, 2, 59);
+            font-weight: bold;
+            font-size: 14px;
         }
 
         input[type="text"],
         input[type="email"],
+        input[type="tel"],
         select,
         textarea {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+            padding: 11px 13px;
+            margin-bottom: 18px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            font-size: 15px;
+            background: #fff;
+            color: #333;
+            transition: border-color 0.2s;
         }
 
-        input[type="submit"] {
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: rgb(50, 2, 59);
+        }
+
+        textarea { resize: vertical; min-height: 130px; }
+
+        .required { color: #c00; margin-left: 2px; }
+
+        /* ── Submit button ── */
+        .submit-btn {
             width: 100%;
-            padding: 12px;
-            background-color: #007bff;
+            padding: 14px;
+            background-color: rgb(50, 2, 59);
             border: none;
             color: white;
             font-size: 16px;
-            border-radius: 4px;
+            font-weight: bold;
+            border-radius: 6px;
             cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background-color 0.2s;
         }
+        .submit-btn:hover { background-color: #5a0070; }
+        .submit-btn:disabled { background-color: #999; cursor: not-allowed; }
 
-        input[type="submit"]:hover {
-            background-color: #0056b3;
+        /* ── Status messages ── */
+        .msg {
+            display: none;
+            padding: 14px 16px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
         }
+        .msg.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
+        .msg.error   { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
 
-        .success-message {
-            color: green;
-            font-weight: bold;
-            margin-bottom: 20px;
+        /* ── Contact info strip ── */
+        .contact-info {
+            background: rgb(50, 2, 59);
+            color: #f0c0f0;
+            border-radius: 12px;
+            padding: 22px 24px;
+            margin-top: 28px;
+            font-size: 14px;
+            line-height: 1.8;
         }
- 
-        .error-message {
-            color: red;
+        .contact-info h3 { color: #fff; margin-top: 0; }
+        .contact-info a  { color: #f0c0f0; }
+
+        /* ── Back home ── */
+        .back-home {
+            text-align: center;
+            margin-top: 28px;
+        }
+        .back-home a {
+            background: #fd98ec;
+            color: rgb(50, 2, 59);
+            padding: 11px 28px;
+            border-radius: 25px;
+            text-decoration: none;
             font-weight: bold;
-            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        .back-home a:hover { background: #f060d0; color: #fff; }
+
+        @media (max-width: 480px) {
+            .form-card { padding: 20px 14px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <img src="pvformage.jpg" alt="Top Image">
-       <center><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSejtWSj8b9zIPVAiET5PTdRrCMNuqrl--DNNs5CPDi-xHvy6A/viewform?embedded=true" width="320" height="1174" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></center>
-        
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="pvlogouss.png" width="140" height="35" alt="ParahVine Logo">
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pvservices.html">Services</a></li>
+            <li><a href="pvaboutus.html">About Us</a></li>
+            <li><a href="pvportfolio.html">Portfolio / Products</a></li>
+            <li><a href="pvcontactus.html">Contact</a></li>
+        </ul>
     </div>
-    <div class="rounded-box">
-        <h2 style="color:rgb(238, 106, 18);">CLICK TO RETURN TO HOME PAGE</h2>
-        <center><p><a href="index.html">Home</a></p></center>
+
+    <div class="page-wrapper">
+
+        <!-- Banner image -->
+        <img src="pvformage.jpg" alt="Contact ParahVine GlobalTech" class="banner">
+
+        <!-- Form card -->
+        <div class="form-card">
+            <h2>GET IN TOUCH WITH US</h2>
+            <p class="subtitle">Fill the form below and we will respond as soon as possible.</p>
+
+            <!-- Status message area -->
+            <div id="statusMsg" class="msg"></div>
+
+            <form id="contactForm" novalidate>
+
+                <label for="full_name">Full Name <span class="required">*</span></label>
+                <input type="text" id="full_name" name="full_name"
+                       placeholder="Enter your full name" required maxlength="200">
+
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email"
+                       placeholder="Enter your email address" required maxlength="200">
+
+                <label for="phone">Phone / WhatsApp Number</label>
+                <input type="tel" id="phone" name="phone"
+                       placeholder="e.g. +2348031508969" maxlength="50">
+
+                <label for="subject">Subject</label>
+                <select id="subject" name="subject">
+                    <option value="">-- Select a subject --</option>
+                    <option value="Graphic & UX Design">Graphic &amp; UX Design</option>
+                    <option value="Website Development">Website Development</option>
+                    <option value="Mobile App Development">Mobile App Development</option>
+                    <option value="Video Content Creation">Video Content Creation</option>
+                    <option value="Digital Marketing">Digital Marketing</option>
+                    <option value="Brand Management">Brand Management</option>
+                    <option value="Industrial Printing">Industrial Printing</option>
+                    <option value="ParahSoft CBT Software">ParahSoft CBT Software</option>
+                    <option value="ParahTeach Learning Game">ParahTeach Learning Game</option>
+                    <option value="General Enquiry">General Enquiry</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="message">Your Message <span class="required">*</span></label>
+                <textarea id="message" name="message"
+                          placeholder="Tell us how we can help you..." required maxlength="3000"></textarea>
+
+                <button type="submit" class="submit-btn" id="submitBtn">SEND MESSAGE</button>
+
+            </form>
+        </div>
+
+        <!-- Contact info -->
+        <div class="contact-info">
+            <h3>Other Ways to Reach Us</h3>
+            <p>📧 <a href="mailto:team@parahvineglobaltech.com">team@parahvineglobaltech.com</a></p>
+            <p>📞 Nigeria: <a href="tel:+2348031508969">+2348031508969</a> (Call / WhatsApp)</p>
+            <p>📞 USA: <a href="tel:+18442880933">+1-844-288-0933</a></p>
+            <p>🏢 1901 N. Roselle Road, Suite 800, Schaumburg, IL 60195, USA</p>
+            <p>🏢 19, Oke Arula Area, Ofatedo (Osogbo), Nigeria</p>
+        </div>
+
+        <!-- Back to home -->
+        <div class="back-home">
+            <a href="index.html">← Back to Home Page</a>
+        </div>
+
     </div>
-    
+
+    <script>
+        const form       = document.getElementById('contactForm');
+        const statusMsg  = document.getElementById('statusMsg');
+        const submitBtn  = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Clear previous messages
+            statusMsg.className = 'msg';
+            statusMsg.textContent = '';
+
+            const fullName = document.getElementById('full_name').value.trim();
+            const email    = document.getElementById('email').value.trim();
+            const message  = document.getElementById('message').value.trim();
+
+            // Client-side validation
+            if (!fullName) {
+                showMsg('Please enter your full name.', 'error');
+                document.getElementById('full_name').focus();
+                return;
+            }
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showMsg('Please enter a valid email address.', 'error');
+                document.getElementById('email').focus();
+                return;
+            }
+            if (!message) {
+                showMsg('Please enter your message.', 'error');
+                document.getElementById('message').focus();
+                return;
+            }
+
+            // Disable button while submitting
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        full_name: fullName,
+                        email:     email,
+                        phone:     document.getElementById('phone').value.trim(),
+                        subject:   document.getElementById('subject').value,
+                        message:   message,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMsg(data.message, 'success');
+                    form.reset();
+                } else {
+                    showMsg(data.message || 'Something went wrong. Please try again.', 'error');
+                }
+
+            } catch (err) {
+                showMsg('Unable to send your message. Please check your connection and try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'SEND MESSAGE';
+            }
+        });
+
+        function showMsg(text, type) {
+            statusMsg.textContent = text;
+            statusMsg.className   = 'msg ' + type;
+            statusMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+
 </body>
 </html>
