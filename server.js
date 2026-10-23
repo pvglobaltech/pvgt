@@ -69,35 +69,22 @@ function sanitize(str) {
   return String(str).trim().replace(/[<>]/g, '');
 }
 
-// ── Contact form route ────────────────────────────────────────────────────────
-app.post('/api/contact', contactLimiter, async (req, res) => {
-  const fullName = sanitize(req.body.full_name);
-  const email    = sanitize(req.body.email);
-  const phone    = sanitize(req.body.phone);
-  const subject  = sanitize(req.body.subject);
-  const message  = sanitize(req.body.message);
+// ── Check if SMTP is configured ───────────────────────────────────────────────
+function smtpConfigured() {
+  return !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+}
 
-  // Basic validation
-  if (!fullName || !email || !message) {
-    return res.status(400).json({ success: false, message: 'Full name, email, and message are required.' });
+// ── Send emails (non-blocking — failure never breaks the form) ────────────────
+async function sendEmails(fullName, email, phone, subject, message) {
+  if (!smtpConfigured()) {
+    console.warn('⚠️  SMTP not configured — skipping email notifications.');
+    return;
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
-  }
+  const transporter = createTransporter();
 
+  // Notification to ParahVine team
   try {
-    // 1. Save to database
-    await pool.query(
-      `INSERT INTO contact_messages (full_name, email, phone, subject, message)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [fullName, email, phone || null, subject || null, message]
-    );
-
-    // 2. Send notification email to ParahVine team
-    const transporter = createTransporter();
-
     await transporter.sendMail({
       from: `"ParahVine Website" <${process.env.SMTP_USER}>`,
       to: 'team@parahvineglobaltech.com',
@@ -123,8 +110,13 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
         </div>
       `,
     });
+    console.log(`✅ Team notification email sent for message from ${fullName}`);
+  } catch (err) {
+    console.error('❌ Team notification email failed:', err.message);
+  }
 
-    // 3. Send auto-reply to the person who contacted
+  // Auto-reply to the sender
+  try {
     await transporter.sendMail({
       from: `"ParahVine GlobalTech" <${process.env.SMTP_USER}>`,
       to: email,
@@ -152,13 +144,54 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
         </div>
       `,
     });
-
-    return res.json({ success: true, message: 'Your message has been sent successfully! We will get back to you soon.' });
-
+    console.log(`✅ Auto-reply sent to ${email}`);
   } catch (err) {
-    console.error('Contact form error:', err.message);
-    return res.status(500).json({ success: false, message: 'Something went wrong. Please try again or contact us directly.' });
+    console.error('❌ Auto-reply email failed:', err.message);
   }
+}
+
+// ── Contact form route ────────────────────────────────────────────────────────
+app.post('/api/contact', contactLimiter, async (req, res) => {
+  const fullName = sanitize(req.body.full_name);
+  const email    = sanitize(req.body.email);
+  const phone    = sanitize(req.body.phone);
+  const subject  = sanitize(req.body.subject);
+  const message  = sanitize(req.body.message);
+
+  // Basic validation
+  if (!fullName || !email || !message) {
+    return res.status(400).json({ success: false, message: 'Full name, email, and message are required.' });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
+  }
+
+  // ── Step 1: Save to database (this MUST succeed) ──────────────────────────
+  try {
+    await pool.query(
+      `INSERT INTO contact_messages (full_name, email, phone, subject, message)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [fullName, email, phone || null, subject || null, message]
+    );
+    console.log(`✅ Message from ${fullName} (${email}) saved to database.`);
+  } catch (err) {
+    console.error('❌ Database save failed:', err.message);
+    return res.status(500).json({
+      success: false,
+      message: 'We could not save your message. Please try again or contact us directly at team@parahvineglobaltech.com',
+    });
+  }
+
+  // ── Step 2: Respond to user immediately — database save succeeded ─────────
+  res.json({ success: true, message: 'Your message has been received! We will get back to you soon.' });
+
+  // ── Step 3: Send emails in the background (non-blocking) ─────────────────
+  // Runs after the response is sent — email failure won't affect the user
+  sendEmails(fullName, email, phone, subject, message).catch((err) => {
+    console.error('Unexpected email error:', err.message);
+  });
 });
 
 // ── Catch-all: serve index.html for any unmatched route ──────────────────────
