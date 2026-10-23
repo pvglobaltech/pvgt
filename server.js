@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const path = require('path');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -192,6 +193,93 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
   sendEmails(fullName, email, phone, subject, message).catch((err) => {
     console.error('Unexpected email error:', err.message);
   });
+});
+
+// ── Admin: in-memory token store (tokens expire after 8 hours) ───────────────
+const adminSessions = new Map(); // token → expiry timestamp
+
+function generateToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+function validateToken(token) {
+  if (!token) return false;
+  const expiry = adminSessions.get(token);
+  if (!expiry) return false;
+  if (Date.now() > expiry) {
+    adminSessions.delete(token);
+    return false;
+  }
+  return true;
+}
+
+function authMiddleware(req, res, next) {
+  const header = req.headers['authorization'] || '';
+  const token  = header.replace('Bearer ', '').trim();
+  if (!validateToken(token)) {
+    return res.status(401).json({ success: false, message: 'Unauthorised. Please log in again.' });
+  }
+  next();
+}
+
+// Rate limiter for login attempts: max 5 tries per 15 minutes per IP
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { success: false, message: 'Too many login attempts. Please wait 15 minutes.' },
+});
+
+// ── POST /api/admin/login ─────────────────────────────────────────────────────
+app.post('/api/admin/login', loginLimiter, (req, res) => {
+  const { password } = req.body;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminPassword) {
+    console.error('❌ ADMIN_PASSWORD environment variable is not set.');
+    return res.status(500).json({ success: false, message: 'Admin not configured. Contact developer.' });
+  }
+
+  if (!password || password !== adminPassword) {
+    return res.status(401).json({ success: false, message: 'Incorrect password.' });
+  }
+
+  const token  = generateToken();
+  const expiry = Date.now() + 8 * 60 * 60 * 1000; // 8 hours
+  adminSessions.set(token, expiry);
+
+  console.log('✅ Admin login successful.');
+  return res.json({ success: true, token });
+});
+
+// ── GET /api/admin/messages ───────────────────────────────────────────────────
+app.get('/api/admin/messages', authMiddleware, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, full_name, email, phone, subject, message, submitted_at
+       FROM contact_messages
+       ORDER BY submitted_at DESC`
+    );
+    return res.json({ success: true, messages: result.rows });
+  } catch (err) {
+    console.error('❌ Fetch messages error:', err.message);
+    return res.status(500).json({ success: false, message: 'Failed to fetch messages.' });
+  }
+});
+
+// ── DELETE /api/admin/messages/:id ───────────────────────────────────────────
+app.delete('/api/admin/messages/:id', authMiddleware, async (req, res) => {
+  const { id } = req.params;
+  if (!id || isNaN(Number(id))) {
+    return res.status(400).json({ success: false, message: 'Invalid message ID.' });
+  }
+  try {
+    await pool.query('DELETE FROM contact_messages WHERE id = $1', [Number(id)]);
+    console.log(`✅ Message #${id} deleted by admin.`);
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('❌ Delete message error:', err.message);
+    return res.status(500).json({ success: false, message: 'Failed to delete message.' });
+  }
 });
 
 // ── Catch-all: serve index.html for any unmatched route ──────────────────────

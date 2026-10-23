@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Admin Dashboard — ParahVine GlobalTech</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0eaf4;
+            min-height: 100vh;
+        }
+
+        /* ── Top bar ── */
+        .topbar {
+            background: #32023b;
+            color: #fff;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .topbar .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .topbar img { height: 36px; width: auto; }
+
+        .topbar h1 {
+            font-size: 1.1rem;
+            color: #f0c0f0;
+            font-weight: bold;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .topbar-right span {
+            font-size: 13px;
+            color: #d0a0d0;
+        }
+
+        .logout-btn {
+            background: #fd98ec;
+            color: #32023b;
+            border: none;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .logout-btn:hover { background: #f060d0; color: #fff; }
+
+        /* ── Main content ── */
+        .main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px 60px;
+        }
+
+        /* ── Stats bar ── */
+        .stats-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px 24px;
+            flex: 1;
+            min-width: 140px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #32023b;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #32023b;
+            line-height: 1;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Toolbar ── */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .toolbar h2 {
+            font-size: 1.2rem;
+            color: #32023b;
+        }
+
+        .toolbar-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            padding: 8px 14px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 14px;
+            width: 220px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus { border-color: #32023b; }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .refresh-btn {
+            background: #32023b;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .refresh-btn:hover { background: #5a0070; }
+
+        /* ── Loading / empty states ── */
+        .state-box {
+            background: #fff;
+            border-radius: 12px;
+            padding: 50px 20px;
+            text-align: center;
+            color: #999;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .state-box .icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+        /* ── Messages list ── */
+        .messages-list { display: flex; flex-direction: column; gap: 14px; }
+
+        .msg-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+            border-left: 4px solid #C7B8EA;
+        }
+        .msg-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.13); }
+        .msg-card.unread { border-left-color: #32023b; }
+
+        .msg-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .msg-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #32023b, #5a0070);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .msg-meta h3 {
+            font-size: 15px;
+            color: #222;
+            margin-bottom: 2px;
+        }
+
+        .msg-meta .email-line {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .msg-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .subject-badge {
+            background: #f0eaf4;
+            color: #32023b;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .date-label {
+            font-size: 12px;
+            color: #aaa;
+            white-space: nowrap;
+        }
+
+        .toggle-arrow {
+            font-size: 14px;
+            color: #aaa;
+            transition: transform 0.2s;
+        }
+        .msg-card.open .toggle-arrow { transform: rotate(180deg); }
+
+        .delete-btn {
+            background: none;
+            border: 1px solid #f5c6cb;
+            color: #c00;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .delete-btn:hover { background: #f8d7da; }
+
+        /* ── Message body (collapsible) ── */
+        .msg-body {
+            display: none;
+            padding: 0 20px 20px;
+            border-top: 1px solid #f0eaf4;
+        }
+        .msg-card.open .msg-body { display: block; }
+
+        .msg-body .phone-line {
+            font-size: 13px;
+            color: #555;
+            margin: 12px 0 10px;
+        }
+
+        .msg-body .message-text {
+            background: #f9f5ff;
+            border-left: 3px solid #32023b;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            white-space: pre-wrap;
+            line-height: 1.7;
+        }
+
+        .msg-body .reply-link {
+            display: inline-block;
+            margin-top: 14px;
+            background: #32023b;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .msg-body .reply-link:hover { background: #5a0070; }
+
+        /* ── Pagination ── */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 7px 14px;
+            border: 1px solid #ccc;
+            background: #fff;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .page-btn:hover, .page-btn.active {
+            background: #32023b;
+            color: #fff;
+            border-color: #32023b;
+        }
+        .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ── Confirm modal ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: #fff;
+            border-radius: 14px;
+            padding: 32px 28px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal .icon { font-size: 2.5rem; margin-bottom: 14px; }
+        .modal h3 { color: #32023b; margin-bottom: 10px; }
+        .modal p { color: #555; font-size: 14px; margin-bottom: 24px; }
+
+        .modal-btns { display: flex; gap: 12px; justify-content: center; }
+
+        .modal-btns button {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-cancel { background: #f0eaf4; color: #32023b; }
+        .btn-cancel:hover { background: #e0d0f0; }
+        .btn-confirm-delete { background: #c00; color: #fff; }
+        .btn-confirm-delete:hover { background: #900; }
+
+        @media (max-width: 600px) {
+            .topbar h1 { font-size: 0.95rem; }
+            .search-box { width: 160px; }
+            .msg-header { padding: 12px 14px 8px; }
+            .msg-body { padding: 0 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top bar -->
+    <div class="topbar">
+        <div class="brand">
+            <img src="pvlogouss.png" alt="ParahVine Logo">
+            <h1>Team Admin Dashboard</h1>
+        </div>
+        <div class="topbar-right">
+            <span id="welcomeMsg">Welcome, Admin</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="number" id="statTotal">—</div>
+                <div class="label">Total Messages</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="statToday">—</div>
+                <div class="label">Received Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="statWeek">—</div>
+                <div class="label">This Week</div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <h2>📨 Contact Messages</h2>
+            <div class="toolbar-right">
+                <input type="text" class="search-box" id="searchBox"
+                       placeholder="Search name, email…" oninput="applyFilters()">
+                <select class="filter-select" id="filterSelect" onchange="applyFilters()">
+                    <option value="">All Subjects</option>
+                    <option value="Graphic & UX Design">Graphic &amp; UX Design</option>
+                    <option value="Website Development">Website Development</option>
+                    <option value="Mobile App Development">Mobile App Development</option>
+                    <option value="Video Content Creation">Video Content Creation</option>
+                    <option value="Digital Marketing">Digital Marketing</option>
+                    <option value="Brand Management">Brand Management</option>
+                    <option value="Industrial Printing">Industrial Printing</option>
+                    <option value="ParahSoft CBT Software">ParahSoft CBT Software</option>
+                    <option value="ParahTeach Learning Game">ParahTeach Learning Game</option>
+                    <option value="General Enquiry">General Enquiry</option>
+                    <option value="Other">Other</option>
+                </select>
+                <button class="refresh-btn" onclick="loadMessages()">↻ Refresh</button>
+            </div>
+        </div>
+
+        <!-- Message list area -->
+        <div id="listArea">
+            <div class="state-box">
+                <div class="icon">⏳</div>
+                <div>Loading messages…</div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
+
+    </div>
+
+    <!-- Delete confirm modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="icon">🗑️</div>
+            <h3>Delete Message?</h3>
+            <p>This will permanently remove this message from the database. This cannot be undone.</p>
+            <div class="modal-btns">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-confirm-delete" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── Auth check ────────────────────────────────────────────────────────
+        const token = sessionStorage.getItem('pvgt_admin_token');
+        if (!token) {
+            window.location.href = 'admin-login.html';
+        }
+
+        function logout() {
+            sessionStorage.removeItem('pvgt_admin_token');
+            window.location.href = 'admin-login.html';
+        }
+
+        // ── State ─────────────────────────────────────────────────────────────
+        let allMessages   = [];
+        let filtered      = [];
+        let currentPage   = 1;
+        const perPage     = 15;
+        let deleteTargetId = null;
+
+        // ── Load messages from API ────────────────────────────────────────────
+        async function loadMessages() {
+            document.getElementById('listArea').innerHTML = `
+                <div class="state-box"><div class="icon">⏳</div><div>Loading messages…</div></div>`;
+
+            try {
+                const res = await fetch('/api/admin/messages', {
+                    headers: { 'Authorization': 'Bearer ' + token },
+                });
+
+                if (res.status === 401) {
+                    logout();
+                    return;
+                }
+
+                const data = await res.json();
+                allMessages = data.messages || [];
+                updateStats();
+                applyFilters();
+
+            } catch (err) {
+                document.getElementById('listArea').innerHTML = `
+                    <div class="state-box">
+                        <div class="icon">⚠️</div>
+                        <div>Failed to load messages. Please refresh.</div>
+                    </div>`;
+            }
+        }
+
+        // ── Stats ─────────────────────────────────────────────────────────────
+        function updateStats() {
+            const now   = new Date();
+            const today = now.toDateString();
+            const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+
+            const todayCount = allMessages.filter(m =>
+                new Date(m.submitted_at).toDateString() === today).length;
+            const weekCount  = allMessages.filter(m =>
+                new Date(m.submitted_at) >= weekAgo).length;
+
+            document.getElementById('statTotal').textContent = allMessages.length;
+            document.getElementById('statToday').textContent = todayCount;
+            document.getElementById('statWeek').textContent  = weekCount;
+        }
+
+        // ── Filter + search ───────────────────────────────────────────────────
+        function applyFilters() {
+            const search  = document.getElementById('searchBox').value.toLowerCase().trim();
+            const subject = document.getElementById('filterSelect').value;
+
+            filtered = allMessages.filter(m => {
+                const matchSearch = !search ||
+                    (m.full_name || '').toLowerCase().includes(search) ||
+                    (m.email     || '').toLowerCase().includes(search) ||
+                    (m.message   || '').toLowerCase().includes(search);
+                const matchSubject = !subject || m.subject === subject;
+                return matchSearch && matchSubject;
+            });
+
+            currentPage = 1;
+            renderPage();
+        }
+
+        // ── Render current page ───────────────────────────────────────────────
+        function renderPage() {
+            const listArea  = document.getElementById('listArea');
+            const pagination = document.getElementById('pagination');
+
+            if (filtered.length === 0) {
+                listArea.innerHTML = `
+                    <div class="state-box">
+                        <div class="icon">📭</div>
+                        <div>No messages found.</div>
+                    </div>`;
+                pagination.innerHTML = '';
+                return;
+            }
+
+            const start  = (currentPage - 1) * perPage;
+            const end    = start + perPage;
+            const page   = filtered.slice(start, end);
+            const total  = Math.ceil(filtered.length / perPage);
+
+            listArea.innerHTML = `<div class="messages-list">${page.map(renderCard).join('')}</div>`;
+
+            // Pagination buttons
+            pagination.innerHTML = '';
+            if (total > 1) {
+                addPageBtn(pagination, '‹', currentPage > 1, () => { currentPage--; renderPage(); });
+                for (let i = 1; i <= total; i++) {
+                    addPageBtn(pagination, i, true, () => { currentPage = i; renderPage(); }, i === currentPage);
+                }
+                addPageBtn(pagination, '›', currentPage < total, () => { currentPage++; renderPage(); });
+            }
+        }
+
+        function addPageBtn(container, label, enabled, onClick, active = false) {
+            const btn = document.createElement('button');
+            btn.className = 'page-btn' + (active ? ' active' : '');
+            btn.textContent = label;
+            btn.disabled = !enabled;
+            btn.onclick = onClick;
+            container.appendChild(btn);
+        }
+
+        // ── Render a single message card ──────────────────────────────────────
+        function renderCard(m) {
+            const initials  = (m.full_name || '?').trim().split(' ')
+                               .map(w => w[0]).slice(0, 2).join('').toUpperCase();
+            const dateStr   = formatDate(m.submitted_at);
+            const subject   = m.subject || 'No Subject';
+            const phone     = m.phone   || 'Not provided';
+            const message   = escHtml(m.message || '');
+            const emailLink = `mailto:${escHtml(m.email)}?subject=Re: ${encodeURIComponent(subject)}`;
+
+            return `
+            <div class="msg-card" id="card-${m.id}">
+                <div class="msg-header" onclick="toggleCard(${m.id})">
+                    <div class="msg-header-left">
+                        <div class="avatar">${initials}</div>
+                        <div class="msg-meta">
+                            <h3>${escHtml(m.full_name)}</h3>
+                            <div class="email-line">${escHtml(m.email)}</div>
+                        </div>
+                    </div>
+                    <div class="msg-header-right">
+                        <span class="subject-badge">${escHtml(subject)}</span>
+                        <span class="date-label">${dateStr}</span>
+                        <button class="delete-btn" onclick="event.stopPropagation(); askDelete(${m.id})">Delete</button>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                </div>
+                <div class="msg-body">
+                    <div class="phone-line">📞 Phone: <strong>${escHtml(phone)}</strong></div>
+                    <div class="message-text">${message}</div>
+                    <a href="${emailLink}" class="reply-link">✉️ Reply via Email</a>
+                </div>
+            </div>`;
+        }
+
+        function toggleCard(id) {
+            const card = document.getElementById('card-' + id);
+            card.classList.toggle('open');
+        }
+
+        // ── Delete ────────────────────────────────────────────────────────────
+        function askDelete(id) {
+            deleteTargetId = id;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        function closeModal() {
+            deleteTargetId = null;
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+
+        async function confirmDelete() {
+            if (!deleteTargetId) return;
+            closeModal();
+
+            try {
+                const res = await fetch(`/api/admin/messages/${deleteTargetId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': 'Bearer ' + token },
+                });
+
+                if (res.status === 401) { logout(); return; }
+
+                const data = await res.json();
+                if (data.success) {
+                    allMessages = allMessages.filter(m => m.id !== deleteTargetId);
+                    updateStats();
+                    applyFilters();
+                }
+            } catch (err) {
+                alert('Delete failed. Please try again.');
+            } finally {
+                deleteTargetId = null;
+            }
+        }
+
+        // Close modal on overlay click
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // ── Helpers ───────────────────────────────────────────────────────────
+        function escHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function formatDate(iso) {
+            if (!iso) return '—';
+            const d = new Date(iso);
+            return d.toLocaleDateString('en-GB', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        // ── Init ──────────────────────────────────────────────────────────────
+        loadMessages();
+    </script>
+
+</body>
+</html>
